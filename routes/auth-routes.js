@@ -94,13 +94,13 @@ router.post("/logout", (req, res)=>{
 
 //App crashes whenever I try to use the commented piece of code bellow
 
-/* router.length("/loggedin", (req, res)=>{
+ router.get("/loggedin", (req, res)=>{
     if (req.session.currentUser){
         res.status(200).json(req.session.currentUser);
         return;
     } else{
         res.status(401).json({message: "User not logged in" });
     };
-});  */
+});
 
 module.exports = router;
