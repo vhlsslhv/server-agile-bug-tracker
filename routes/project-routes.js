@@ -48,17 +48,25 @@ router.post("/projects", async (req, res) => {
             description,
             imageUrl
         });
-        const todoBoard = await Board.create({ title: "todo", project: projectCreated });
+        const todoBoard = await Board.create({ title: "To Do", project: projectCreated });
         await Project.findByIdAndUpdate(projectCreated._id, {
             $push: { boards: todoBoard }
         });
-        const inProgressBoard = await Board.create({ title: "in progress", project: projectCreated });
+        const inProgressBoard = await Board.create({ title: "In Progress", project: projectCreated });
         await Project.findByIdAndUpdate(projectCreated._id, {
             $push: { boards: inProgressBoard }
         });
-        const doneBoard = await Board.create({ title: "done", project: projectCreated });
+        const doneBoard = await Board.create({ title: "Done", project: projectCreated });
         await Project.findByIdAndUpdate(projectCreated._id, {
             $push: { boards: doneBoard }
+        });
+        const backlogBoard = await Board.create({ title: "Backlog", project: projectCreated });
+        await Project.findByIdAndUpdate(projectCreated._id, {
+            $push: { boards: backlogBoard }
+        });
+        const emergencyBoard = await Board.create({ title: "Emergency", project: projectCreated });
+        await Project.findByIdAndUpdate(projectCreated._id, {
+            $push: { boards: emergencyBoard }
         });
         res.status(200).json(projectCreated);
         console.log("Board:", Board);

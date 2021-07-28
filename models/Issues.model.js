@@ -15,10 +15,6 @@ const issueSchema = new Schema({
         type: String,
         required: true,
     },
-    priority: {
-        type: String,
-        required: true,
-    },
     status: {
         type: String,
         required: true,
@@ -36,13 +32,16 @@ const issueSchema = new Schema({
         ref: "User",
     },
     comments: [{
-        username: String,
+        username: String, // Do I need to pass user ID?
         comment: String,
     }],
     board: {
         type: Schema.Types.ObjectId,
         ref: "Board",
     },
+    /* attachment: {
+        type: File,
+    } */
 });
 
 const Issue = mongoose.model("Issue", issueSchema);
