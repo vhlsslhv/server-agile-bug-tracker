@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const projectSchema = new Schema({
     title: String,
     description: String,
-    photo: String,
+    imageUrl: String,
     boards: [{
         type: Schema.Types.ObjectId,
         ref: "Board",

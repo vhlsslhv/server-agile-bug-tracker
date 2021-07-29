@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Issue = require("../models/Issues.model");
+const Issue = require("../models/Issue.model");
 const fileUpload = require("../config/cloudinary");
 
 
@@ -17,7 +17,7 @@ router.get("/issues", async (req, res) => {
 
 //Create issue
 router.post("/issues", async (req, res) => {
-    const { title, description, type, priority, status, reporter, assignee, user, project, comments } = req.body;
+    const { title, description, type, status, reporter, assignee, user, project, comments, attachment } = req.body;
     if (!title || !description) {
         res.status(400).json({ message: "missing fields" });
         return;
@@ -27,23 +27,32 @@ router.post("/issues", async (req, res) => {
             title,
             description,
             type,
-            priority,
             status,
             reporter,
             assignee,
             user,
             project,
-            comments
+            comments,
+            attachment,
         });
         res.status(200).json(response);
     } catch (e) {
         res.status(500).json({ message: `error occurred ${e}` });
     }
+    // create issue for
 });
 
 //Update issue
 
-
+//get issue by id
+router.get("/issues/:id", async (req, res) => {
+    try {
+        const issue = await Issue.findById(req.params.id).populate("issues");
+        res.status(200).json(issue);
+    } catch (e) {
+        res.status(500).json({ message: `error occurred ${e}` });
+    }
+});
 
 //Delete issue
 router.delete("/issue/:id", async (req, res) => {

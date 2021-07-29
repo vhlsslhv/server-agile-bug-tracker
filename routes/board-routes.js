@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Board = require("../models/Board.model");
-const Issue = require("../models/Issues.model");
+const Issue = require("../models/Issue.model");
 const fileUpload = require("../config/cloudinary");
 
 

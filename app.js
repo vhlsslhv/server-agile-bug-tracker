@@ -56,6 +56,9 @@ app.use("/api", project);
 const board = require("./routes/board-routes");
 app.use("/api", board);
 
+//issue Route
+const issue = require("./routes/issue-routes");
+app.use("/api", issue);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require("./error-handling")(app);
