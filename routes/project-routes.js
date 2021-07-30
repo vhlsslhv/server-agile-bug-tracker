@@ -86,11 +86,25 @@ router.delete("/projects/:id", async (req, res) => {
     }
 });
 
+//get board by id
+router.get("/boards/todoBoard:id", async (req, res)=>{
+    try {
+        const todoBoard = await Board.findById(req.params.id).populate("issue");
+        res.status(200).json(todoBoard);
+    } catch (e){
+        res.status(500).json({message: `error occurred${e}`});
+    }
+})
 
 //Get project by id
 router.get("/projects/:id", async (req, res) => {
     try {
-        const project = await Project.findById(req.params.id).populate("boards");
+        const project = await Project.findById(req.params.id).populate({ 
+            path: 'boards',
+            populate: [{
+             path: 'issues',
+             model: 'Issue'
+            }]});
         res.status(200).json(project);
     } catch (e) {
         res.status(500).json({ message: `error occurred ${e}` });

@@ -2,6 +2,8 @@ const express = require("express");
 const router = express.Router();
 const Issue = require("../models/Issue.model");
 const fileUpload = require("../config/cloudinary");
+const Board = require("../models/Board.model");
+const Project = require("../models/Project.model");
 
 
 //Get all issues
@@ -16,38 +18,56 @@ router.get("/issues", async (req, res) => {
 
 
 //Create issue
-router.post("/issues", async (req, res) => {
-    const { title, description, type, status, reporter, assignee, user, project, comments, attachment } = req.body;
+router.post("/projects/:id/issues/new", async (req, res) => {
+    const { title, description, type, status, reporter, assignee, user, board, comments, attachment } = req.body;
     if (!title || !description) {
         res.status(400).json({ message: "missing fields" });
         return;
     }
     try {
-        const response = await Issue.create({
+
+        const project = await Project.findById(req.params.id);
+        console.log("project", project.boards[0]);
+        const todoBoard = await Board.findById(project.boards[0]);
+        console.log("board", todoBoard)
+        const issueCreated = await Issue.create({
             title,
             description,
-            type,
-            status,
-            reporter,
-            assignee,
-            user,
-            project,
-            comments,
-            attachment,
+            board: todoBoard,
+            user: req.session.currentUser
         });
-        res.status(200).json(response);
+
+        await Board.findByIdAndUpdate(todoBoard._id, {
+            $push: { issues: issueCreated }
+        });
+
+        res.status(200).json(issueCreated);
     } catch (e) {
         res.status(500).json({ message: `error occurred ${e}` });
     }
-    // create issue for
+    
 });
 
 //Update issue
+router.put("/issues/:id", async (req, res) => {
+    try {
+        const { title, description, type, status } = req.body;
+        await Issue.findByIdAndUpdate(req.params.id, {
+            title,
+            description,
+            type,
+            status
+        });
+        res.status(200).json(`id ${req.params.id} was updated`);
+    } catch (e) {
+        res.status(500).json({ message: `error occurred ${e}` });
+    }
+});
 
 //get issue by id
 router.get("/issues/:id", async (req, res) => {
     try {
-        const issue = await Issue.findById(req.params.id).populate("issues");
+        const issue = await Issue.findById(req.params.id).populate("todoBoard");
         res.status(200).json(issue);
     } catch (e) {
         res.status(500).json({ message: `error occurred ${e}` });

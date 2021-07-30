@@ -13,11 +13,9 @@ const issueSchema = new Schema({
     },
     type: {
         type: String,
-        required: true,
     },
     status: {
         type: String,
-        required: true,
     },
     reporter: {
         type: Schema.Types.ObjectId,

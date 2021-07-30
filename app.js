@@ -27,14 +27,19 @@ app.use(
         saveUninitialized: true,
         secret: process.env.SESSION_SECRET,
         cookie:{
-            sameSite: "none", //sameSite: true, //frontend backend both run on localhost
-            httpOnly: false, // httpOnly: true, //we are not using https
-            secure: true,
-            maxAge: 60000, //session time
+            sameSite: true, ////frontend backend both run on localhost
+            httpOnly: true, //  //we are not using https
+            maxAge: 600000, //session time
         },
         rolling: true,
     })
 );
+
+/* change this in the session object whenever we have to deploy
+sameSite: "none",
+httpOnly: false,
+secure: true, */
+
 
 // default value for title local
 const projectName = "server-agile-bug-tracker";

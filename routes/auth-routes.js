@@ -85,22 +85,23 @@ router.post("/login", async (req, res)=>{
 });
 
 
-//Logout Route + LoggedIn Route
-
-router.post("/logout", (req, res)=>{
-    req.session.destroy();
-    res.status(200).json({message: "User logged out" });
-});
 
 //App crashes whenever I try to use the commented piece of code bellow
 
- router.get("/loggedin", (req, res)=>{
+router.get("/loggedin", (req, res)=>{
     if (req.session.currentUser){
         res.status(200).json(req.session.currentUser);
         return;
     } else{
         res.status(401).json({message: "User not logged in" });
     };
+});
+
+//Logout Route + LoggedIn Route
+
+router.post("/logout", (req, res)=>{
+    req.session.destroy();
+    res.status(200).json({message: "User logged out" });
 });
 
 module.exports = router;

@@ -7,7 +7,11 @@ const boardSchema = new Schema({
     project: {
         type: Schema.Types.ObjectId,
         ref: "Project",
-    }
+    },
+    issues: [{
+        type: Schema.Types.ObjectId,
+        ref: "Issue",
+    }]
 });
 
 const Board = mongoose.model("Board", boardSchema);

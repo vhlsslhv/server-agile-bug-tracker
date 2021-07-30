@@ -33,6 +33,15 @@ router.post("/boards", async (req, res) => {
     }
 });
 
+//get board by id
+router.get("/boards/todoBoard/:id", async (req, res)=>{
+    try {
+        const todoBoard = await Board.findById(req.params.id).populate("Issue");
+        res.status(200).json(todoBoard);
+    } catch (e){
+        res.status(500).json({message: `error occurred${e}`});
+    }
+})
 
 //Delete project
 router.delete("/boards/:id", async (req, res) => {
